@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
             .HasOne(u => u.Profile)
             .WithOne(p => p.User)
             .HasForeignKey<Profile>(p => p.UserId)
+            .HasPrincipalKey<User>(u => u.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Course>()
