@@ -10,6 +10,8 @@ public class AppDbContext : DbContext
     public DbSet<Course> Courses => Set<Course>();
 
     public DbSet<Lesson> Lessons => Set<Lesson>();
+
+    public DbSet<Enrollment> Enrollments => Set<Enrollment>();
      
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,6 +32,21 @@ public class AppDbContext : DbContext
             .WithMany(c => c.Lessons)
             .HasForeignKey(l => l.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Enrollment>()
+            .HasKey(e => new { e.UserId, e.CourseId });
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.User)
+            .WithMany(u => u.Enrollments)
+            .HasForeignKey(e => e.UserId);
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Course)
+            .WithMany(c => c.Enrollments)
+            .HasForeignKey(e => e.CourseId);
+
+        
         
     }
 }
