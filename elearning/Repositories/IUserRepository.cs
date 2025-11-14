@@ -6,7 +6,7 @@ public interface IUserRepository
     Task<User?> GetByEmailAsync(string email);
     Task<IEnumerable<User>> GetAllAsync();
     Task AddAsync(User user);
-    void Update(User user);
-    void Remove(User user);
+    Task Update(User user);
+    Task Remove(User user);
     Task SaveChangesAsync();
 }
