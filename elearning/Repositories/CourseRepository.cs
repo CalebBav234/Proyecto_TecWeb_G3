@@ -49,5 +49,15 @@ public class CourseRepository : ICourseRepository
         _db.Courses.Update(course);
         await _db.SaveChangesAsync();
     }
+    public async Task<IEnumerable<Course>> GetAllAsync()
+    {
+        return await _db.Courses
+            .AsNoTracking()
+            .Include(c => c.Teacher)
+            .Include(c => c.Lessons)
+            .Include(c => c.Enrollments)
+                .ThenInclude(e => e.User)
+            .ToListAsync();
+    }
 
 }
