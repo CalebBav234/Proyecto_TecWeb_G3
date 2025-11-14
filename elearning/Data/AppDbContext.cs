@@ -8,6 +8,8 @@ public class AppDbContext : DbContext
     public DbSet<Profile> Profiles => Set<Profile>();
 
     public DbSet<Course> Courses => Set<Course>();
+
+    public DbSet<Lesson> Lessons => Set<Lesson>();
      
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,6 +24,12 @@ public class AppDbContext : DbContext
             .WithMany(u => u.CoursesTaught)
             .HasForeignKey(c => c.TeacherId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Lesson>()
+            .HasOne(l => l.Course)
+            .WithMany(c => c.Lessons)
+            .HasForeignKey(l => l.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);
         
     }
 }
