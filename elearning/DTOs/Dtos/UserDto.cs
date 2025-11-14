@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
- 
 
+namespace DTOs.Dtos;
 public class UserDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
+
+    public string Username { get; set; } = null!;
 
     [EmailAddress]
     public string Email { get; set; } = null!;
-
-    public string Role { get; set; } = "User";
 
     public ProfileDto? Profile { get; set; }
 }

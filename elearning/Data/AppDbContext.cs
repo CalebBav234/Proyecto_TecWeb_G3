@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Lesson> Lessons => Set<Lesson>();
 
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
-     
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
          modelBuilder.Entity<User>()
@@ -26,7 +26,7 @@ public class AppDbContext : DbContext
             .WithMany(u => u.CoursesTaught)
             .HasForeignKey(c => c.TeacherId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         modelBuilder.Entity<Lesson>()
             .HasOne(l => l.Course)
             .WithMany(c => c.Lessons)
@@ -46,7 +46,7 @@ public class AppDbContext : DbContext
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseId);
 
-        
-        
+
+
     }
 }

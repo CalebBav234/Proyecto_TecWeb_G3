@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace DTOs.Dtos;
 public class CourseDto
 {
     public int Id { get; set; }

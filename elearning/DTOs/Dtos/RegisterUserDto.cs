@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DTOS.user;
+namespace DTOs.Dtos;
 public class RegisterUserDto
 {
     [Required]
     [EmailAddress]
     public string Email { get; set; } = null!;
+
+    [Required]
+    public string Username { get; set; } = null!;
 
     [Required]
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]

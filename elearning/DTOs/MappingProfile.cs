@@ -1,8 +1,6 @@
 using AutoMapper;
 using DTOs;
-using DTOS.user;
-
-namespace Application;
+using DTOs.Dtos;
 
 public class MappingProfile : AutoMapper.Profile
 {

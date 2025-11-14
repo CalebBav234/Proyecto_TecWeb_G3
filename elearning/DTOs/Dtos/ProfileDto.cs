@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace DTOs.Dtos;
 public class ProfileDto
 {
     public int Id { get; set; }

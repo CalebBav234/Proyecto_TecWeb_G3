@@ -29,7 +29,17 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public async Task<User?> GetByIdAsync(int id)
+    public async Task<User?> GetByRefreshToken(string refreshToken)
+    {
+        return await _db.Users
+            .AsNoTracking()
+            .Include(u => u.Profile)
+            .Include(u => u.Enrollments)
+                .ThenInclude(e => e.Course)
+            .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+    }
+
+    public async Task<User?> GetByIdAsync(Guid id)
     {
         return await _db.Users
             .AsNoTracking()

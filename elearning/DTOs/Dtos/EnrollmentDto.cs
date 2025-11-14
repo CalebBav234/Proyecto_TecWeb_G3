@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace DTOs.Dtos;
 public class EnrollmentDto
 {
     public int UserId { get; set; }
