@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
  
-namespace DTOs.User;
+
 public class UserDto
 {
     public int Id { get; set; }

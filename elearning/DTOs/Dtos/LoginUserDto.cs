@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DTOS.user;
 public class LoginUserDto
 {
     [Required]
