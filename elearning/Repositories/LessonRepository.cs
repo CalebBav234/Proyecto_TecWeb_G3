@@ -32,6 +32,20 @@ public class LessonRepository : ILessonRepository
             .OrderBy(l => l.CreatedAt)
             .ToListAsync();
     }
+
+    public async Task<(IEnumerable<Lesson> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        var total = await _db.Lessons.CountAsync();
+        var items = await _db.Lessons
+            .AsNoTracking()
+            .Include(l => l.Course)
+                .ThenInclude(c => c.Teacher)
+            .OrderBy(l => l.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        return (items, total);
+    }
     public async Task RemoveAsync(Lesson lesson)
     {
         _db.Lessons.Remove(lesson);

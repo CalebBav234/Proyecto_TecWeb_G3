@@ -32,6 +32,11 @@ public class UserService : IUserService
         return await _repo.GetByRefreshToken(refreshToken);
     }
 
+    public async Task<(IEnumerable<User> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        return await _repo.GetPagedAsync(page, pageSize);
+    }
+
     public async Task<IEnumerable<User>> GetAllAsync()
     {
         return await _repo.GetAllAsync();

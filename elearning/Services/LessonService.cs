@@ -28,6 +28,11 @@ public class LessonService : ILessonService
         return await _repo.GetByCourseAsync(courseId);
     }
 
+    public async Task<(IEnumerable<Lesson> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        return await _repo.GetPagedAsync(page, pageSize);
+    }
+
     public async Task<IEnumerable<Lesson>> GetAllAsync()
     {
         return await _repo.GetAllAsync();

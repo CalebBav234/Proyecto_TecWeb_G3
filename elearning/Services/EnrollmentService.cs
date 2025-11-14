@@ -31,6 +31,11 @@ public class EnrollmentService : IEnrollmentService
         return await _repo.GetByCourseAsync(courseId);
     }
 
+    public async Task<(IEnumerable<Enrollment> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        return await _repo.GetPagedAsync(page, pageSize);
+    }
+
     public async Task<IEnumerable<Enrollment>> GetAllAsync()
     {
         return await _repo.GetAllAsync();

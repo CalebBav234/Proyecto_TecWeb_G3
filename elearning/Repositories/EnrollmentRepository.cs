@@ -38,6 +38,21 @@ public class EnrollmentRepository : IEnrollmentRepository
             .Include(e => e.Course)
             .ToListAsync();
     }
+
+    public async Task<(IEnumerable<Enrollment> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        var total = await _db.Enrollments.CountAsync();
+        var items = await _db.Enrollments
+            .AsNoTracking()
+            .Include(e => e.User)
+            .Include(e => e.Course)
+                .ThenInclude(c => c.Teacher)
+            .OrderBy(e => e.EnrolledAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        return (items, total);
+    }
     public async Task UpdateAsync(Enrollment enrollment)
     {
         _db.Enrollments.Update(enrollment);

@@ -49,6 +49,21 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    public async Task<(IEnumerable<User> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        var total = await _db.Users.CountAsync();
+        var items = await _db.Users
+            .AsNoTracking()
+            .Include(u => u.Profile)
+            .Include(u => u.Enrollments)
+                .ThenInclude(e => e.Course)
+            .OrderBy(u => u.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        return (items, total);
+    }
+
     public async Task<IEnumerable<User>> GetAllAsync()
     {
         return await _db.Users
