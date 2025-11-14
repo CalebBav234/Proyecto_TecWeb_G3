@@ -16,12 +16,13 @@ public class LessonRepository : ILessonRepository
         await _db.Lessons.AddAsync(lesson);
         await _db.SaveChangesAsync();
     }
+
     public async Task<Lesson?> GetByIdAsync(int id)
     {
         return await _db.Lessons
 
             .Include(l => l.Course)
-            .ThenInclude(c => c.Teacher)
+                .ThenInclude(c => c.Teacher)
             .FirstOrDefaultAsync(l => l.Id == id);
     }
     public async Task<IEnumerable<Lesson>> GetByCourseAsync(int courseId)
