@@ -17,10 +17,41 @@ public class UserRepository : IUserRepository
     }
     public async Task<User?> GetByEmailAsync(string email)
     {
-         await _db.Users
+         return await _db.Users
             .Include(u => u.Profile)
             .Include(u => u.Enrollments)
             .ThenInclude(e => e.Course)
             .FirstOrDefaultAsync(u => u.Email == email);
     }
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        return await _db.Users
+            .Include(u => u.Profile)
+            .Include(u => u.Enrollments)
+            .ThenInclude(e => e.Course)
+            .FirstOrDefaultAsync(u => u.Id == id);
+    }
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _db.Users
+            .Include(u => u.Profile)
+            .Include(u => u.Enrollments)
+            .ToListAsync();
+    }
+    public Task Update(User user)
+    {
+        _db.Users.Update(user);
+        return Task.CompletedTask;
+    }
+
+    public Task Remove(User user)
+    {
+        _db.Users.Remove(user);
+        return Task.CompletedTask;
+    }
+    public async Task SaveChangesAsync()
+    {
+        await _db.SaveChangesAsync();
+    }
+    
 }
