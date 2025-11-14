@@ -6,6 +6,8 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<User> Users => Set<User>();
     public DbSet<Profile> Profiles => Set<Profile>();
+
+    public DbSet<Course> Courses => Set<Course>();
      
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -14,6 +16,12 @@ public class AppDbContext : DbContext
             .WithOne(p => p.User)
             .HasForeignKey<Profile>(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Course>()
+            .HasOne(c => c.Teacher)
+            .WithMany(u => u.CoursesTaught)
+            .HasForeignKey(c => c.TeacherId)
+            .OnDelete(DeleteBehavior.Restrict);
         
     }
 }
