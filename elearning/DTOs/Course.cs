@@ -10,6 +10,6 @@ public class Course
     public int TeacherId { get; set; }  
     public User Teacher { get; set; } = null!;
 
-    public ICollection<Lesson>? Lessons { get; set; }
-    public ICollection<Enrollment>? Enrollments { get; set; } 
+    public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 }
