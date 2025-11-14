@@ -12,6 +12,6 @@ public interface IUserService
     Task<IEnumerable<User>> GetAllAsync();
 
     Task<User> AddAsync(RegisterUserDto dto);
-    Task<User> UpdateAsync(UserDto dto);
-    Task RemoveAsync(Guid id);
+    Task<User> UpdateAsync(UserDto dto, Guid userId);
+    Task RemoveAsync(Guid id, Guid userId);
 }

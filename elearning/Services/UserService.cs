@@ -56,20 +56,22 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> UpdateAsync(UserDto dto)
+    public async Task<User> UpdateAsync(UserDto dto, Guid userId)
     {
         User? user = await GetByIdAsync(dto.Id);
         if (user == null) throw new Exception("User doesnt exist.");
+        if (user.Id != userId) throw new UnauthorizedAccessException("You can only update your own profile.");
         user.Username = dto.Username;
         user.Email = dto.Email;
         await _repo.UpdateAsync(user);
         return user;
     }
 
-    public async Task RemoveAsync(Guid id)
+    public async Task RemoveAsync(Guid id, Guid userId)
     {
         User? user = await GetByIdAsync(id);
         if (user == null) return;
+        if (user.Id != userId) throw new UnauthorizedAccessException("You can only delete your own account.");
 
         await _repo.RemoveAsync(user);
     }
