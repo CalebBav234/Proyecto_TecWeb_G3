@@ -9,6 +9,7 @@ public interface IUserService
     Task<User?> GetByEmailAsync(string email);
     Task<User?> GetByRefreshToken(string refreshToken);
     Task<IEnumerable<User>> GetAllAsync();
+    
     Task<User> AddAsync(RegisterUserDto dto);
     Task<User> UpdateAsync(UserDto dto);
     Task RemoveAsync(Guid id);
