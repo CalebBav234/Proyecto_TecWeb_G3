@@ -2,7 +2,7 @@ using DTOs;
 using Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories;
+namespace Repositories;
 
 public class UserRepository : IUserRepository
 {

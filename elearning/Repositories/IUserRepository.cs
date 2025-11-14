@@ -1,6 +1,6 @@
 using DTOs;
 
-namespace Infrastructure.Repositories;
+namespace Repositories;
 
 public interface IUserRepository
 {
