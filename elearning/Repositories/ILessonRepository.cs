@@ -11,5 +11,4 @@ public interface ILessonRepository
     Task RemoveAsync(Lesson lesson);
 
     Task <IEnumerable<Lesson>> GetAllAsync();
-    Task SaveChangesAsync();
 }
