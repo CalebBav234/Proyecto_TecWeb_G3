@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace DTOS.user;
 public class RegisterUserDto
 {
     [Required]
