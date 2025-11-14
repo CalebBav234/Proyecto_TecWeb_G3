@@ -15,6 +15,7 @@ public class UserService : IUserService
         _repo = repo;
         _mapper = mapper;
     }
+    
 
     public async Task<User?> GetByIdAsync(Guid id)
     {
