@@ -5,10 +5,10 @@ namespace Services;
 
 public interface ICourseService
 {
-    Task<Course?> GetByIdAsync(int id);
+    Task<Course?> GetByIdAsync(Guid id);
     Task<(IEnumerable<Course> Items, int Total)> GetPagedAsync(int page, int pageSize);
     Task<IEnumerable<Course>> GetAllAsync();
     Task<Course> CreateCourse(CreateCourseDto dto);
-    Task<Course> UpdateCourse(UpdateCourseDto dto, int id, int userId);
-    Task DeleteCourse(int id, int userId);
+    Task<Course> UpdateCourse(UpdateCourseDto dto, Guid id, Guid userId);
+    Task DeleteCourse(Guid id, Guid userId);
 }

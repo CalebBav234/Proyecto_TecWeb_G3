@@ -16,7 +16,7 @@ public class ProfileService : IProfileService
         _mapper = mapper;
     }
 
-    public async Task<ProfileDto?> GetByIdAsync(int id)
+    public async Task<ProfileDto?> GetByIdAsync(Guid id)
     {
         var profile = await _repo.GetByIdAsync(id);
         return profile == null ? null : _mapper.Map<ProfileDto>(profile);
@@ -46,7 +46,7 @@ public class ProfileService : IProfileService
         return _mapper.Map<ProfileDto>(profile);
     }
 
-    public async Task<ProfileDto> UpdateAsync(int id, UpdateProfileDto dto, Guid userId)
+    public async Task<ProfileDto> UpdateAsync(Guid id, UpdateProfileDto dto, Guid userId)
     {
         var profile = await _repo.GetByIdAsync(id);
         if (profile == null) throw new Exception("Profile not found.");
@@ -63,7 +63,7 @@ public class ProfileService : IProfileService
         return _mapper.Map<IEnumerable<ProfileDto>>(profiles);
     }
 
-    public async Task DeleteAsync(int id, Guid userId)
+    public async Task DeleteAsync(Guid id, Guid userId)
     {
         var profile = await _repo.GetByIdAsync(id);
         if (profile == null) return;

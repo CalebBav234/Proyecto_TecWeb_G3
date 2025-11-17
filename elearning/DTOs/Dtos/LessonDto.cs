@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DTOs.Dtos;
 public class LessonDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [Required]
     public string Title { get; set; } = null!;
@@ -12,5 +12,5 @@ public class LessonDto
 
     public DateTime CreatedAt { get; set; }
 
-    public int CourseId { get; set; }
+    public Guid CourseId { get; set; }
 }

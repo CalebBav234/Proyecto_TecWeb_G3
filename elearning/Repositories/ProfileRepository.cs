@@ -19,7 +19,7 @@ public class ProfileRepository : IProfileRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<Profile?> GetByIdAsync(int id)
+    public async Task<Profile?> GetByIdAsync(Guid id)
     {
         return await _db.Profiles
             .AsNoTracking()

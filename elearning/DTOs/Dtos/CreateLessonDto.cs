@@ -9,5 +9,5 @@ public class CreateLessonDto
     public string Content { get; set; } = null!;
 
     [Required]
-    public int CourseId { get; set; }
+    public Guid CourseId { get; set; }
 }

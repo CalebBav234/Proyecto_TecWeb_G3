@@ -16,7 +16,7 @@ public class EnrollmentRepository : IEnrollmentRepository
         await _db.Enrollments.AddAsync(enrollment);
         await _db.SaveChangesAsync();
     }
-    public async Task<Enrollment?> GetAsync(int userId, int courseId)
+    public async Task<Enrollment?> GetAsync(Guid userId, Guid courseId)
     {
         return await _db.Enrollments
             .Include(e => e.User)
@@ -24,14 +24,14 @@ public class EnrollmentRepository : IEnrollmentRepository
                 .ThenInclude(c => c.Teacher)
             .FirstOrDefaultAsync(e => e.UserId == userId && e.CourseId == courseId);
     }
-    public async Task<IEnumerable<Enrollment>> GetByCourseAsync(int courseId)
+    public async Task<IEnumerable<Enrollment>> GetByCourseAsync(Guid courseId)
     {
         return await _db.Enrollments
             .Where(e => e.CourseId == courseId)
             .Include(e => e.User)
             .ToListAsync();
     }
-    public async Task<IEnumerable<Enrollment>> GetByUserAsync(int userId)
+    public async Task<IEnumerable<Enrollment>> GetByUserAsync(Guid userId)
     {
         return await _db.Enrollments
             .Where(e => e.UserId == userId)

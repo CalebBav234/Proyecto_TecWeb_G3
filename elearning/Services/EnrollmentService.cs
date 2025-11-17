@@ -16,17 +16,17 @@ public class EnrollmentService : IEnrollmentService
         _mapper = mapper;
     }
 
-    public async Task<Enrollment?> GetAsync(int userId, int courseId)
+    public async Task<Enrollment?> GetAsync(Guid userId, Guid courseId)
     {
         return await _repo.GetAsync(userId, courseId);
     }
 
-    public async Task<IEnumerable<Enrollment>> GetByUserAsync(int userId)
+    public async Task<IEnumerable<Enrollment>> GetByUserAsync(Guid userId)
     {
         return await _repo.GetByUserAsync(userId);
     }
 
-    public async Task<IEnumerable<Enrollment>> GetByCourseAsync(int courseId)
+    public async Task<IEnumerable<Enrollment>> GetByCourseAsync(Guid courseId)
     {
         return await _repo.GetByCourseAsync(courseId);
     }
@@ -52,7 +52,7 @@ public class EnrollmentService : IEnrollmentService
         return enrollment;
     }
 
-    public async Task<Enrollment> UpdateEnrollment(UpdateEnrollmentDto dto, int userId, int courseId, int currentUserId)
+    public async Task<Enrollment> UpdateEnrollment(UpdateEnrollmentDto dto, Guid userId, Guid courseId, Guid currentUserId)
     {
         Enrollment? enrollment = await GetAsync(userId, courseId);
         if (enrollment == null) throw new Exception("Enrollment doesn't exist.");
@@ -65,7 +65,7 @@ public class EnrollmentService : IEnrollmentService
         return enrollment;
     }
 
-    public async Task DeleteEnrollment(int userId, int courseId, int currentUserId)
+    public async Task DeleteEnrollment(Guid userId, Guid courseId, Guid currentUserId)
     {
         Enrollment? enrollment = await GetAsync(userId, courseId);
         if (enrollment == null) return;

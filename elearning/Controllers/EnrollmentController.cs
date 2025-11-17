@@ -34,12 +34,12 @@ namespace elearning.Controllers
             return Ok(enrollments);
         }
 
-        [HttpGet("user/{userId:int}")]
+        [HttpGet("user/{userId:guid}")]
         [Authorize]
-        public async Task<IActionResult> GetEnrollmentsByUser(int userId)
+        public async Task<IActionResult> GetEnrollmentsByUser(Guid userId)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var currentUserId))
                 return Unauthorized();
 
             if (userId != currentUserId && !User.IsInRole("Admin"))
@@ -49,20 +49,20 @@ namespace elearning.Controllers
             return Ok(enrollments);
         }
 
-        [HttpGet("course/{courseId:int}")]
+        [HttpGet("course/{courseId:guid}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetEnrollmentsByCourse(int courseId)
+        public async Task<IActionResult> GetEnrollmentsByCourse(Guid courseId)
         {
             var enrollments = await _service.GetByCourseAsync(courseId);
             return Ok(enrollments);
         }
 
-        [HttpGet("user/{userId:int}/course/{courseId:int}")]
+        [HttpGet("user/{userId:guid}/course/{courseId:guid}")]
         [Authorize]
-        public async Task<IActionResult> GetEnrollment(int userId, int courseId)
+        public async Task<IActionResult> GetEnrollment(Guid userId, Guid courseId)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var currentUserId))
                 return Unauthorized();
 
             if (userId != currentUserId && !User.IsInRole("Admin"))
@@ -79,7 +79,7 @@ namespace elearning.Controllers
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var currentUserId))
                 return Unauthorized();
 
             if (dto.UserId != currentUserId && !User.IsInRole("Admin"))
@@ -89,13 +89,13 @@ namespace elearning.Controllers
             return CreatedAtAction(nameof(GetEnrollment), new { userId = enrollment.UserId, courseId = enrollment.CourseId }, enrollment);
         }
 
-        [HttpPut("user/{userId:int}/course/{courseId:int}")]
+        [HttpPut("user/{userId:guid}/course/{courseId:guid}")]
         [Authorize]
-        public async Task<IActionResult> UpdateEnrollment([FromBody] UpdateEnrollmentDto dto, int userId, int courseId)
+        public async Task<IActionResult> UpdateEnrollment([FromBody] UpdateEnrollmentDto dto, Guid userId, Guid courseId)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var currentUserId))
                 return Unauthorized();
 
             try
@@ -109,12 +109,12 @@ namespace elearning.Controllers
             }
         }
 
-        [HttpDelete("user/{userId:int}/course/{courseId:int}")]
+        [HttpDelete("user/{userId:guid}/course/{courseId:guid}")]
         [Authorize]
-        public async Task<IActionResult> DeleteEnrollment(int userId, int courseId)
+        public async Task<IActionResult> DeleteEnrollment(Guid userId, Guid courseId)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var currentUserId))
                 return Unauthorized();
 
             try

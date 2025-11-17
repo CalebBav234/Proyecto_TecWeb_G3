@@ -4,9 +4,9 @@ namespace Repositories;
 
 public interface IEnrollmentRepository
 {
-    Task<Enrollment?> GetAsync(int userId, int courseId);
-    Task<IEnumerable<Enrollment>> GetByUserAsync(int userId);
-    Task<IEnumerable<Enrollment>> GetByCourseAsync(int courseId);
+    Task<Enrollment?> GetAsync(Guid userId, Guid courseId);
+    Task<IEnumerable<Enrollment>> GetByUserAsync(Guid userId);
+    Task<IEnumerable<Enrollment>> GetByCourseAsync(Guid courseId);
     Task<(IEnumerable<Enrollment> Items, int Total)> GetPagedAsync(int page, int pageSize);
 
     Task<IEnumerable<Enrollment>> GetAllAsync();

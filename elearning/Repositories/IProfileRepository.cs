@@ -4,7 +4,7 @@ namespace Repositories;
 
 public interface IProfileRepository
 {
-    Task<Profile?> GetByIdAsync(int id);
+    Task<Profile?> GetByIdAsync(Guid id);
     Task<Profile?> GetByUserIdAsync(Guid userId);
     Task<(IEnumerable<Profile> Items, int Total)> GetPagedAsync(int page, int pageSize);
     Task<IEnumerable<Profile>> GetAllAsync();

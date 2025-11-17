@@ -17,7 +17,7 @@ public class LessonRepository : ILessonRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<Lesson?> GetByIdAsync(int id)
+    public async Task<Lesson?> GetByIdAsync(Guid id)
     {
         return await _db.Lessons
 
@@ -25,7 +25,7 @@ public class LessonRepository : ILessonRepository
                 .ThenInclude(c => c.Teacher)
             .FirstOrDefaultAsync(l => l.Id == id);
     }
-    public async Task<IEnumerable<Lesson>> GetByCourseAsync(int courseId)
+    public async Task<IEnumerable<Lesson>> GetByCourseAsync(Guid courseId)
     {
         return await _db.Lessons
             .Where(l => l.CourseId == courseId)

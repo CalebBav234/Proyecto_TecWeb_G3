@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 public class CreateEnrollmentDto
 {
     [Required]
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
     [Required]
-    public int CourseId { get; set; }
+    public Guid CourseId { get; set; }
 }

@@ -29,7 +29,7 @@ public class CourseRepository : ICourseRepository
         return (items, total);
 
     }
-    public async Task<Course?> GetByIdAsync(int id)
+    public async Task<Course?> GetByIdAsync(Guid id)
     {
         return await _db.Courses
             .Include(c => c.Teacher)
@@ -37,7 +37,7 @@ public class CourseRepository : ICourseRepository
             .Include(c => c.Enrollments)
                 .ThenInclude(e => e.User)
             .FirstOrDefaultAsync(c => c.Id == id);
-        
+
     }
     public async Task RemoveAsync(Course course)
     {

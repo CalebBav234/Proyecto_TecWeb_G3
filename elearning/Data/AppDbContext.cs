@@ -37,6 +37,18 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Enrollment>()
             .HasKey(e => new { e.UserId, e.CourseId });
 
+        modelBuilder.Entity<Profile>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<Course>()
+            .Property(c => c.Id)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<Lesson>()
+            .Property(l => l.Id)
+            .ValueGeneratedOnAdd();
+
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.User)
             .WithMany(u => u.Enrollments)

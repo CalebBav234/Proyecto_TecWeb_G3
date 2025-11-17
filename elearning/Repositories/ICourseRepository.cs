@@ -4,7 +4,7 @@ namespace Repositories;
 
 public interface ICourseRepository
 {
-    Task<Course?> GetByIdAsync(int id);
+    Task<Course?> GetByIdAsync(Guid id);
     Task<(IEnumerable<Course> Items, int Total)> GetPagedAsync(int page, int pageSize);
 
     Task<IEnumerable<Course>> GetAllAsync();

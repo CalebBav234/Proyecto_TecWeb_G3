@@ -2,7 +2,7 @@ namespace DTOs;
 
 public class Profile
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public string FullName { get; set; } = null!;
     public string? Bio { get; set; }

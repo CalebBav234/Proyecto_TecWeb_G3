@@ -34,9 +34,9 @@ namespace elearning.Controllers
             return Ok(courses);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:guid}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetCourseById(int id)
+        public async Task<IActionResult> GetCourseById(Guid id)
         {
             var course = await _service.GetByIdAsync(id);
             if (course == null) return NotFound();
@@ -52,13 +52,13 @@ namespace elearning.Controllers
             return CreatedAtAction(nameof(GetCourseById), new { id = course.Id }, course);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:guid}")]
         [Authorize]
-        public async Task<IActionResult> UpdateCourse([FromBody] UpdateCourseDto dto, int id)
+        public async Task<IActionResult> UpdateCourse([FromBody] UpdateCourseDto dto, Guid id)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
                 return Unauthorized();
             try
             {
@@ -71,12 +71,12 @@ namespace elearning.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:guid}")]
         [Authorize]
-        public async Task<IActionResult> DeleteCourse(int id)
+        public async Task<IActionResult> DeleteCourse(Guid id)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
                 return Unauthorized();
 
             try

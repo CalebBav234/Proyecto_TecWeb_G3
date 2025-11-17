@@ -4,5 +4,5 @@ public class UpdateCourseDto
 
     public string? Description { get; set; }
 
-    public int? TeacherId { get; set; }
+    public Guid? TeacherId { get; set; }
 }

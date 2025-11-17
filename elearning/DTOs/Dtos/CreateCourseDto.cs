@@ -8,5 +8,5 @@ public class CreateCourseDto
     public string? Description { get; set; }
 
     [Required]
-    public int TeacherId { get; set; }
+    public Guid TeacherId { get; set; }
 }

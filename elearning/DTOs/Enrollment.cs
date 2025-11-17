@@ -2,8 +2,8 @@ namespace DTOs;
 
 public class Enrollment
 {
-    public int UserId { get; set; }
-    public int CourseId { get; set; }
+    public Guid UserId { get; set; }
+    public Guid CourseId { get; set; }
     public DateTime EnrolledAt { get; set; } = DateTime.UtcNow;
     public float Progress { get; set; } = 0f;
 

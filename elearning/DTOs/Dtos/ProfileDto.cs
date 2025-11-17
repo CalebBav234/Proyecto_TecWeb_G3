@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DTOs.Dtos;
 public class ProfileDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [Required]
     public string FullName { get; set; } = null!;

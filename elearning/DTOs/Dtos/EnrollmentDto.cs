@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 namespace DTOs.Dtos;
 public class EnrollmentDto
 {
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
-    public int CourseId { get; set; }
+    public Guid CourseId { get; set; }
 
     public DateTime EnrolledAt { get; set; }
 

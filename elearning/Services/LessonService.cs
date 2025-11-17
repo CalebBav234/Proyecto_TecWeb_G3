@@ -18,12 +18,12 @@ public class LessonService : ILessonService
         _mapper = mapper;
     }
 
-    public async Task<Lesson?> GetByIdAsync(int id)
+    public async Task<Lesson?> GetByIdAsync(Guid id)
     {
         return await _repo.GetByIdAsync(id);
     }
 
-    public async Task<IEnumerable<Lesson>> GetByCourseAsync(int courseId)
+    public async Task<IEnumerable<Lesson>> GetByCourseAsync(Guid courseId)
     {
         return await _repo.GetByCourseAsync(courseId);
     }
@@ -50,12 +50,12 @@ public class LessonService : ILessonService
         return lesson;
     }
 
-    public async Task<Lesson> UpdateLesson(UpdateLessonDto dto, int id, int userId)
+    public async Task<Lesson> UpdateLesson(UpdateLessonDto dto, Guid id, Guid userId)
     {
         Lesson? lesson = await GetByIdAsync(id);
         if (lesson == null) throw new Exception("Lesson doesn't exist.");
 
-        
+
         Course? course = await _courseRepo.GetByIdAsync(lesson.CourseId);
         if (course == null || course.TeacherId != userId) throw new UnauthorizedAccessException("You are not authorized to update this lesson.");
 
@@ -67,12 +67,12 @@ public class LessonService : ILessonService
         return lesson;
     }
 
-    public async Task DeleteLesson(int id, int userId)
+    public async Task DeleteLesson(Guid id, Guid userId)
     {
         Lesson? lesson = await GetByIdAsync(id);
         if (lesson == null) return;
 
-        
+
         Course? course = await _courseRepo.GetByIdAsync(lesson.CourseId);
         if (course == null || course.TeacherId != userId) throw new UnauthorizedAccessException("You are not authorized to delete this lesson.");
 

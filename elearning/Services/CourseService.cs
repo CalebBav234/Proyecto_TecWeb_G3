@@ -16,7 +16,7 @@ public class CourseService : ICourseService
         _mapper = mapper;
     }
 
-    public async Task<Course?> GetByIdAsync(int id)
+    public async Task<Course?> GetByIdAsync(Guid id)
     {
         return await _repo.GetByIdAsync(id);
     }
@@ -43,7 +43,7 @@ public class CourseService : ICourseService
         return course;
     }
 
-    public async Task<Course> UpdateCourse(UpdateCourseDto dto, int id, int userId)
+    public async Task<Course> UpdateCourse(UpdateCourseDto dto, Guid id, Guid userId)
     {
         Course? course = await GetByIdAsync(id);
         if (course == null) throw new Exception("Course doesn't exist.");
@@ -58,7 +58,7 @@ public class CourseService : ICourseService
         return course;
     }
 
-    public async Task DeleteCourse(int id, int userId)
+    public async Task DeleteCourse(Guid id, Guid userId)
     {
         Course? course = await GetByIdAsync(id);
         if (course == null) return;

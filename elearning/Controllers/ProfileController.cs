@@ -16,16 +16,16 @@ namespace elearning.Controllers
             _service = service;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("by-id/{id:guid}")]
         [Authorize]
-        public async Task<IActionResult> GetProfileById(int id)
+        public async Task<IActionResult> GetProfileById(Guid id)
         {
             var profile = await _service.GetByIdAsync(id);
             if (profile == null) return NotFound();
             return Ok(profile);
         }
 
-        [HttpGet("{userId:guid}")]
+        [HttpGet("by-user/{userId:guid}")]
         [Authorize]
         public async Task<IActionResult> GetProfileByUserId(Guid userId)
         {
@@ -79,9 +79,9 @@ namespace elearning.Controllers
             }
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:guid}")]
         [Authorize]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto, int id)
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto, Guid id)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
@@ -104,9 +104,9 @@ namespace elearning.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:guid}")]
         [Authorize]
-        public async Task<IActionResult> DeleteProfile(int id)
+        public async Task<IActionResult> DeleteProfile(Guid id)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
