@@ -1,17 +1,14 @@
 services:
   api:
-    build: .
+    build: ..
     container_name: elearning_api
     ports:
       - "8080:8080"
+    env_file: .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
-      - Jwt__Key=${JWT_KEY}
-      - Jwt__Issuer=${JWT_ISSUER}
-      - Jwt__Audience=${JWT_AUDIENCE}
-      - Jwt__ExpiresMinutes=${JWT_EXPIRES_MINUTES}
-      - Jwt__RefreshDays=${JWT_REFRESH_DAYS}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
     depends_on:
       db:
         condition: service_healthy
