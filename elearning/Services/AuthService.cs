@@ -82,7 +82,7 @@ public class AuthService : IAuthService
         if (!user.RefreshTokenExpiresAt.HasValue || user.RefreshTokenExpiresAt.Value < DateTime.UtcNow) return (false, null);
         var (accessToken, expiresIn, jti) = GenerateJwtToken(user);
         var newRefresh = GenerateSecureRefreshToken();
-        var refreshDays = int.Parse(_configuration["Jwt:RefreshDays"] ?? "7");
+        var refreshDays = int.Parse(_configuration["Jwt:RefreshDays"] ?? "14");
 
         user.RefreshToken = newRefresh;
         user.RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(refreshDays);
@@ -109,7 +109,7 @@ public class AuthService : IAuthService
         var key = jwtSection["Key"]!;
         var issuer = jwtSection["Issuer"];
         var audience = jwtSection["Audience"];
-        var expireMinutes = int.Parse(jwtSection["ExpiresMinutes"] ?? "15");
+        var expireMinutes = int.Parse(jwtSection["ExpiresMinutes"] ?? "60");
 
         var jti = Guid.NewGuid().ToString();
 
