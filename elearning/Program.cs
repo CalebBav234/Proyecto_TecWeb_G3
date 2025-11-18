@@ -62,7 +62,7 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    // fallback local si quieres
+   
     var dbName = Environment.GetEnvironmentVariable("POSTGRES_DB");
     var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
     var dbPass = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
@@ -91,7 +91,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
