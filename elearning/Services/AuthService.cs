@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 
 namespace Services;
 
@@ -17,18 +18,25 @@ public class AuthService : IAuthService
     private readonly IUserRepository _users;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<AuthService> _logger;
 
-    public AuthService(IUserRepository users, IMapper mapper, IConfiguration configuration)
+    public AuthService(IUserRepository users, IMapper mapper, IConfiguration configuration, ILogger<AuthService> logger)
     {
         _users = users;
         _mapper = mapper;
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<string> RegisterAsync(RegisterUserDto dto)
     {
+        _logger.LogInformation("Attempting to register user with email: {Email}", dto.Email);
         var exists = await _users.GetByEmailAsync(dto.Email);
-        if (exists != null) throw new ApplicationException("Email already in use.");
+        if (exists != null)
+        {
+            _logger.LogWarning("Registration failed: Email {Email} already in use", dto.Email);
+            throw new ApplicationException("Email already in use.");
+        }
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         var user = new User
@@ -39,21 +47,31 @@ public class AuthService : IAuthService
             Role = "User"
         };
         await _users.AddAsync(user);
+        _logger.LogInformation("User registered successfully with ID: {UserId}", user.Id);
         return user.Id.ToString();
     }
 
     public async Task<(bool ok, LoginResponseDto? response)> LoginAsync(LoginUserDto dto)
     {
+        _logger.LogInformation("Attempting login for email: {Email}", dto.Email);
         var user = await _users.GetByEmailAsync(dto.Email);
-        if (user == null) return (false, null);
+        if (user == null)
+        {
+            _logger.LogWarning("Login failed: User with email {Email} not found", dto.Email);
+            return (false, null);
+        }
 
         var ok = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-        if (!ok) return (false, null);
+        if (!ok)
+        {
+            _logger.LogWarning("Login failed: Invalid password for email {Email}", dto.Email);
+            return (false, null);
+        }
 
         var (accessToken, expiresIn, jti) = GenerateJwtToken(user);
         var refreshToken = GenerateSecureRefreshToken();
 
-        var refreshDays = int.Parse(_configuration["Jwt:RefreshDays"] ?? "7");
+        var refreshDays = int.Parse(_configuration["Jwt:RefreshDays"] ?? "14");
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(refreshDays);
         user.RefreshTokenRevokedAt = null;
@@ -70,6 +88,7 @@ public class AuthService : IAuthService
             TokenType = "Bearer"
         };
 
+        _logger.LogInformation("Login successful for user ID: {UserId}", user.Id);
         return (true, resp);
     }
 

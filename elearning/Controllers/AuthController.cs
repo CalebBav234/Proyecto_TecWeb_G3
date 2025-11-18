@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using DTOs.Dtos;
 using Services;
 using System.Security.Claims;
+using Serilog;
 
 namespace elearning.Controllers
 {
@@ -11,23 +12,47 @@ namespace elearning.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _service;
-        public AuthController(IAuthService service)
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(IAuthService service, ILogger<AuthController> logger)
         {
             _service = service;
+            _logger = logger;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
         {
-            var id = await _service.RegisterAsync(dto);
-            return CreatedAtAction(nameof(Register), new { id }, null);
+            try
+            {
+                var id = await _service.RegisterAsync(dto);
+                _logger.LogInformation("User registered successfully with ID: {UserId}", id);
+                return CreatedAtAction(nameof(Register), new { id }, null);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during user registration for email: {Email}", dto.Email);
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
-            var (ok, response) = await _service.LoginAsync(dto);
-            if (!ok || response is null) return Unauthorized();
-            return Ok(response);
+            try
+            {
+                var (ok, response) = await _service.LoginAsync(dto);
+                if (!ok || response is null)
+                {
+                    _logger.LogWarning("Login failed for email: {Email}", dto.Email);
+                    return Unauthorized();
+                }
+                _logger.LogInformation("Login successful for email: {Email}", dto.Email);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during login for email: {Email}", dto.Email);
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost("refresh")]
@@ -42,14 +67,30 @@ namespace elearning.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
-                return Unauthorized();
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+                {
+                    _logger.LogWarning("Logout failed: Invalid user ID claim");
+                    return Unauthorized();
+                }
 
-            var ok = await _service.LogoutAsync(userId);
-            if (!ok) return BadRequest("Logout failed");
+                var ok = await _service.LogoutAsync(userId);
+                if (!ok)
+                {
+                    _logger.LogWarning("Logout failed for user ID: {UserId}", userId);
+                    return BadRequest("Logout failed");
+                }
 
-            return Ok(new { message = "Logged out successfully" });
+                _logger.LogInformation("Logout successful for user ID: {UserId}", userId);
+                return Ok(new { message = "Logged out successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during logout");
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
