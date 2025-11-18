@@ -61,7 +61,7 @@ public class AppDbContext : DbContext
 
         
         var adminUserId = Guid.Parse("00000000-0000-0000-0000-000000000001");
-        var hashedPassword = BCrypt.Net.BCrypt.HashPassword("Admin123!");
+        var hashedPassword = "$2a$11$sMzqb4cfyrk8qpCy.M5Y9OsdNOZxwIjGMYji6OpCAa7LAdBg9B50G";
         modelBuilder.Entity<User>().HasData(new User
         {
             Id = adminUserId,
