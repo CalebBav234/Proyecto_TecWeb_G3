@@ -20,6 +20,7 @@ services:
     image: postgres:16
     container_name: elearning_pg
     restart: unless-stopped
+    env_file: .env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
