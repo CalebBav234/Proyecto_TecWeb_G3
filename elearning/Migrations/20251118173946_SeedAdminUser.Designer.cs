@@ -3,6 +3,7 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace elearning.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251118173946_SeedAdminUser")]
+    partial class SeedAdminUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,7 +178,7 @@ namespace elearning.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Email = "admin@elearning.com",
-                            PasswordHash = "$2a$11$sd9Ey5fvffQKvoV6R4yYkOaXyAUP9HedjuF3tS9ZSaBpPb8PtP4aS",
+                            PasswordHash = "$2a$11$HQmbwa4IHccNHANlvZ6zMOdy2x6jPbuHIYsZ3bGKHpSjpvkZmcBRW",
                             Role = "Admin",
                             Username = "admin"
                         });

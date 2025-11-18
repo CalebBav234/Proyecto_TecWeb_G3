@@ -59,7 +59,25 @@ public class AppDbContext : DbContext
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseId);
 
+        
+        var adminUserId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword("Admin123!");
+        modelBuilder.Entity<User>().HasData(new User
+        {
+            Id = adminUserId,
+            Email = "admin@elearning.com",
+            Username = "admin",
+            PasswordHash = hashedPassword,
+            Role = "Admin"
+        });
 
+        modelBuilder.Entity<Profile>().HasData(new Profile
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            UserId = adminUserId,
+            FullName = "Administrator",
+            Bio = "System Administrator"
+        });
 
     }
 }
